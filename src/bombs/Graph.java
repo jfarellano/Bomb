@@ -2,6 +2,8 @@ package bombs;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.LinkedList;
 
 public class Graph {
@@ -133,6 +135,36 @@ public class Graph {
                 setingLowValues(components[i][1]);
             }
         }
+        sortCutSet();
+        //System.out.println("Size: " + cutSet.size());
+        for (int i = 0; i < cutSet.size(); i++) {
+            if (grado(cutSet.get(i)) > 1) {
+                //System.out.println(cutSet.get(i) + " : " + i + " : " + cutSet.size());
+                s = pigeonValue(cutSet.get(i));
+                if(i < cutSet.size() - 1){
+                    if((grado(cutSet.get(i)) == s - compQty + 1|| s > (grado(cutSet.get(i + 1)) + compQty)) && s >= maxPV && grado(cutSet.get(i)) > grado(cutSet.get(i + 1))) return cutSet.get(i);
+                    if(maxPV >= grado(cutSet.get(i + 1)) + compQty) return maxV;
+                }
+                if (s > maxPV) {
+                    maxPV = s;
+                    maxV = cutSet.get(i);
+                }
+            }
+        }
+        System.out.println("Entro");
+        return maxV;
+    }
+    
+    public int bomb1() {
+        int maxPV = 0, maxV = 0, s = 0;
+        getComponents();
+        for (int i = 0; i < compQty; i++) {
+            if (components[i][0] != 1) {
+                setingUpTree(components[i][1], 0);
+                setingLowValues(components[i][1]);
+            }
+        }
+        sortCutSet();
         //System.out.println("Size: " + cutSet.size());
         for (int i = 0; i < cutSet.size(); i++) {
             if (grado(cutSet.get(i)) > 1) {
@@ -216,6 +248,15 @@ public class Graph {
         public int getY() {
             return y;
         }
+    }
+    
+    public void sortCutSet(){
+        Collections.sort(cutSet, new Comparator<Integer>() {
+            @Override
+            public int compare(Integer o1, Integer o2) {
+                return grado(o2) - grado(o1);
+            }
+        });
     }
 
     //John's place!
