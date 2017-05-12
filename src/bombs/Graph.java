@@ -135,6 +135,9 @@ public class Graph {
                 setingLowValues(components[i][1]);
             }
         }
+        if(cutSet.size() == 0){
+            for(int i = 0; i < orden; i++) if(grado(i) > 0) return i;
+        }
         sortCutSet();
         //System.out.println("Size: " + cutSet.size());
         for (int i = 0; i < cutSet.size(); i++) {
