@@ -36,7 +36,6 @@ public class Bombs {
 //
 //        }
 //
-//
 //        System.out.println("La estacion que debe bombardear es la estacion " + G.bomb() + " porque su pigeon value es " + G.pigeonValue(G.bomb()) + ".");
 //
 //        new GraphViewer(G);
@@ -45,28 +44,43 @@ public class Bombs {
     
     public static void main(String[] args) throws IOException {
         Random r = new Random();
-        Graph G = new Graph(10);
+        Graph G = new Graph(9999);
         boolean sw = true;
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 6000; i++) {
 //            G.AgregarArista(i * 4 + 1, i * 4 + 3);
             sw = true;
             while(sw){
-                int a = r.nextInt(10);
-                int b = r.nextInt(10);
+                int a = r.nextInt(9999);
+                int b = r.nextInt(9999);
                 if(a != b){
                     G.AgregarArista(a, b);
                     sw = false;
                 }
             }
         }
+        
+//        for(int i = 0; i <  999; i++){
+//            for(int j = 0; j < 999; j++){
+//                if(i != j){
+//                    G.AgregarArista(i, j);
+//                }
+//            }
+//        }
+
         System.out.println("Empezo!");
         int a = G.bomb();
         
+//        for (int i : G.cutSet) {
+//            System.out.println(i + " : " + (G.compQty < G.pigeonValue(i)));
+//        }
         
-        System.out.println("QTY:    " + G.compQty);
+        System.out.println(G.esConexo() + " : " +G.kReg());
+        
+        
+        System.out.println("QTY:    " + G.compQty + " : " + G.cutSet.size());
         System.out.println("La estacion que debe bombardear es la estacion " + a + " : " + G.pigeonValue(a));
         
-        new GraphViewer(G);
+        //new GraphViewer(G);
     }
     
 }

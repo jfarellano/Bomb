@@ -20,7 +20,7 @@ public class Graph {
         this.orden = orden;
         this.visitado = new boolean[orden];
         this.components = new int[orden + 1][orden + 1];
-        A = new boolean[orden][orden];
+        this.A = new boolean[orden + 1][orden + 1];
         for (int i = 0; i < orden; i++) {
             Arrays.fill(A[i], false);
             nodes.add(new Node(i));
@@ -126,39 +126,22 @@ public class Graph {
 
     public int bomb() {
         int maxPV = 0, maxV = 0, s = 0;
-        if (kReg()) {
-            return 0;
-        }
         getComponents();
-        for(int i = 0; i < compQty; i++){
-            if(components[i][0] != 1){
-                setingUpTree(components[i][1]);
+        for (int i = 0; i < compQty; i++) {
+            if (components[i][0] != 1) {
+                setingUpTree(components[i][1], 0);
                 setingLowValues(components[i][1]);
             }
         }
-        
-        boolean v = gradeValid();
-        for (int i = 0; i < cutSet.size(); i++){ 
-            int vertex = cutSet.get(i);
-            if (grado(vertex) != 0) {
-                if (v) {
-                    if (regularComponent(getVComp(vertex))) {
-                        s = compQty;
-                    } else if (grado(vertex) != 1) {
-                        s = pigeonValue(vertex);
-                        //System.out.println(i);
-                    } else {
-                        s = compQty;
-                    }
-                } else {
-                    s = pigeonValue(vertex);
+        //System.out.println("Size: " + cutSet.size());
+        for (int i = 0; i < cutSet.size(); i++) {
+            if (grado(cutSet.get(i)) > 1) {
+                //System.out.println(cutSet.get(i) + " : " + i + " : " + cutSet.size());
+                s = pigeonValue(cutSet.get(i));
+                if (s > maxPV) {
+                    maxPV = s;
+                    maxV = cutSet.get(i);
                 }
-            } else {
-                s = compQty - 1;
-            }
-            if (s > maxPV) {
-                maxPV = s;
-                maxV = i;
             }
         }
         return maxV;
@@ -206,7 +189,7 @@ public class Graph {
 
         public LinkedList<Integer> backEdges = new LinkedList<>();
         public LinkedList<Integer> forwardEdges = new LinkedList<>();
-        
+
         private int x = 0, y = 0;
 
         public Node(int data) {
@@ -246,15 +229,15 @@ public class Graph {
         }
     }
 
-    public void setingUpTree(int vertex) {
+    public void setingUpTree(int vertex, int cont) {
         visited.add(vertex);
-        nodes.get(vertex).visitedNumber = visited.size();
+        nodes.get(vertex).visitedNumber = cont + 1;
         int comp = getVComp(vertex);
         for (int i = 1; i < components[comp][0]; i++) {
             if (A[vertex][components[comp][i]]) {
                 if (!visited.contains(components[comp][i])) {
                     nodes.get(vertex).forwardEdges.add(components[comp][i]);
-                    setingUpTree(components[comp][i]);
+                    setingUpTree(components[comp][i], cont + 1);
                 } else {
                     nodes.get(vertex).backEdges.add(components[comp][i]);
                 }
@@ -274,15 +257,17 @@ public class Graph {
                     nodes.get(vertex).lowNumberReacheable = low;
                 }
             }
-            if (nodes.get(vertex).forwardEdges.size() >= 2) {
-                System.out.println("Vertex " + vertex + " is an articulation point...");
-                cutSet.add(vertex);
+            if (nodes.get(vertex).visitedNumber == 1) { //vistedNumber...
+                if (nodes.get(vertex).forwardEdges.size() >= 2) {
+                    //System.out.println("Vertex " + vertex + " is an articulation point..."); 
+                    cutSet.add(vertex);
+                }
             }
             for (Integer forwardEdge : nodes.get(vertex).forwardEdges) {
                 int lowFordwardEdge = setingLowValues(forwardEdge);
                 if (lowFordwardEdge >= nodes.get(vertex).visitedNumber) {
-                    System.out.println("Vertex " + vertex + " is an articulation point...");
-                    if (!cutSet.contains(vertex)) {
+                    //System.out.println("Vertex " + vertex + " is an articulation point...");
+                    if (!cutSet.contains(vertex) && nodes.get(vertex).visitedNumber != 1) {
                         cutSet.add(vertex);
                     }
                 }
@@ -291,6 +276,7 @@ public class Graph {
                     nodes.get(vertex).lowNumberReacheable = low;
                 }
             }
+
         }
         return low;
     }
