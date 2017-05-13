@@ -142,43 +142,6 @@ public class Graph {
         for (int i = 0; i < orden; i++) if (A[v][i]) g++;
         return g;
     }
-
-    public class Node {
-
-        private final int data;
-        int visitedNumber;
-        int lowNumberReacheable = -1;
-
-        public LinkedList<Integer> backEdges = new LinkedList<>();
-        public LinkedList<Integer> forwardEdges = new LinkedList<>();
-
-        private int x = 0, y = 0;
-
-        public Node(int data) {
-            this.data = data;
-        }
-
-        public void setCoords(int _x, int _y) {
-            x = _x;
-            y = _y;
-        }
-
-        public boolean isValid() {
-            return x != 0 && y != 0;
-        }
-
-        public int getData() {
-            return data;
-        }
-
-        public int getX() {
-            return x;
-        }
-
-        public int getY() {
-            return y;
-        }
-    }
     
     public void sortCutSet(){
         Collections.sort(cutSet, new Comparator<Integer>() {
@@ -188,9 +151,6 @@ public class Graph {
             }
         });
     }
-
-    //John's place!
-
 
     public void setingUpTree(int vertex, int cont) {
         visited.add(vertex);
@@ -239,6 +199,20 @@ public class Graph {
                 setingUpTree(components[i][1], 0);
                 setingLowValues(components[i][1]);
             }
+        }
+    }
+    
+    public class Node {
+
+        private final int data;
+        int visitedNumber;
+        int lowNumberReacheable = -1;
+
+        public LinkedList<Integer> backEdges = new LinkedList<>();
+        public LinkedList<Integer> forwardEdges = new LinkedList<>();
+
+        public Node(int data) {
+            this.data = data;
         }
     }
 }
