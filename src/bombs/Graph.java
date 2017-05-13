@@ -112,30 +112,6 @@ public class Graph {
         }
         return maxV;
     }
-    
-     public int bomb1() {
-        int maxPV = 0, maxV = 0, s = 0;
-        getComponents();
-        for (int i = 0; i < compQty; i++) {
-            if (components[i][0] != 1) {
-                setingUpTree(components[i][1], 0);
-                setingLowValues(components[i][1]);
-            }
-        }
-        sortCutSet();
-        //System.out.println("Size: " + cutSet.size());
-        for (int i = 0; i < cutSet.size(); i++) {
-            if (grado(cutSet.get(i)) > 1) {
-                //System.out.println(cutSet.get(i) + " : " + i + " : " + cutSet.size());
-                s = pigeonValue(cutSet.get(i));
-                if (s > maxPV) {
-                    maxPV = s;
-                    maxV = cutSet.get(i);
-                }
-            }
-        }
-        return maxV;
-}
 
     public int grado(int v) {
         int g = 0;
