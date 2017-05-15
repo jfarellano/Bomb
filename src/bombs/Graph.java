@@ -51,6 +51,7 @@ public class Graph {
     public int bomb() {
         int maxPV = 0, maxV = 0, s = 0;
         for (int i = 0; i < orden; i++) {
+            System.out.println(i);
             s = pigeonValue(i);
             if (s > maxPV) {
                 maxPV = s;
