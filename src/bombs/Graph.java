@@ -101,7 +101,7 @@ public class Graph {
             if (grado(cutSet.get(i)) > 1) {
                 s = pigeonValue(cutSet.get(i));
                 if(i < cutSet.size() - 1){
-                    if((grado(cutSet.get(i)) == s - compQty + 1|| s > (grado(cutSet.get(i + 1)) + compQty)) && s >= maxPV) return cutSet.get(i);
+                    if((grado(cutSet.get(i)) == s - compQty + 1|| s > (grado(cutSet.get(i + 1)) + compQty - 1)) && s >= maxPV) return cutSet.get(i);
                     if(maxPV >= grado(cutSet.get(i)) + compQty) return maxV;
                 }
                 if (s > maxPV) {
