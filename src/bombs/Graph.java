@@ -182,7 +182,7 @@ public class Graph {
         }
     }
 
-    public int setingLowValues(int vertex) {
+  public int setingLowValues(int vertex) {
         int low = 9999;
         if (nodes.get(vertex).lowNumberReacheable == -1) {
             low = nodes.get(vertex).visitedNumber; //Rule 1
