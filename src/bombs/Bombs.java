@@ -25,9 +25,7 @@ public class Bombs {
             G.AgregarArista(a, b);
         }
         int a = G.bomb();
-        for(int i:G.cutSet){
-            System.out.println(i + " : " + G.grado(i));
-        }
+        
         System.out.println("La estacion que debe bombardear es la estacion " + a + " porque su pigeon value es " + G.pigeonValue(a) + ".");
 
     }
